@@ -1,6 +1,6 @@
 {
   "name": "ethcss",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "devDependencies": {
     "@babel/cli": "^7.7.0",
