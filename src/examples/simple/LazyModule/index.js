@@ -1,5 +1,5 @@
 import React from 'react'
-import { injectStyles } from 'e-css'
+import { injectStyles } from 'ethcss'
 
 const styles = {
     wrapper: {

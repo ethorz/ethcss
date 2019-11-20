@@ -1,4 +1,4 @@
-## e-css
+## ethcss
 It is npm package, for writing css in js.
 
 * ✓ Naming like CSS modules
@@ -11,13 +11,13 @@ It is npm package, for writing css in js.
 * ✓ Styles As Object Literals
 
 Based on [free-style](https://github.com/blakeembrey/free-style)
-<br />[Demo app component source](https://github.com/ethorz/e-css/blob/master/src/examples/simple/app.js)
-<br />[Demo index file](https://github.com/ethorz/e-css/blob/master/src/examples/simple/index.js) (Example for hot-reloading)
+<br />[Demo app component source](https://github.com/ethorz/ethcss/blob/master/src/examples/simple/app.js)
+<br />[Demo index file](https://github.com/ethorz/ethcss/blob/master/src/examples/simple/index.js) (Example for hot-reloading)
 
 ## Install
 
 ```
-$ npm i e-css
+$ npm i ethcss
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ $ npm i e-css
 ### Basic
 ```javascript
 import React from 'react'
-import { addStyles, renderCss } from 'e-css'
+import { addStyles, renderCss } from 'ethcss'
 
 const app = addStyles({
     wrapper: { //css modules className: .wrapper_{hash}
@@ -78,7 +78,7 @@ const App = () => (
 
 ### Mix classNames
 ```javascript
-import { cn } from 'e-css'
+import { cn } from 'ethcss'
 //...
 const App = () => <div className={cn(app.wrapper, app.full, {[app.greenBack]: this.state.isGreen})}>
 ```
