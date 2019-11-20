@@ -1,6 +1,6 @@
 {
   "name": "ecss",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "devDependencies": {
     "@babel/cli": "^7.7.0",
