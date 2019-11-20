@@ -1,0 +1,51 @@
+{
+  "name": "ecss",
+  "version": "3.0.0",
+  "main": "dist/index.js",
+  "devDependencies": {
+    "@babel/cli": "^7.7.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "^3.2.0"
+  },
+  "dependencies": {
+    "free-style": "^3.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "compile": "NODE_ENV=production babel src/ecss --out-dir dist --copy-files",
+    "prepublish": "npm run compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethorz/ecss.git"
+  },
+  "keywords": [
+    "es6",
+    "css in js",
+    "css-modules",
+    "css",
+    "javascript"
+  ],
+  "author": "Igor Maslov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ethorz/ecss/issues"
+  },
+  "homepage": "https://github.com/ethorz/ecss#readme",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
