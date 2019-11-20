@@ -23,38 +23,38 @@ export const cn = function() {
                 }
             }
         }
-    });
+    })
 
-    return classNames.join(' ');
-};
+    return classNames.join(' ')
+}
 
 export const init = (initOptions = {}) => {
-    options = initOptions;
-};
+    options = initOptions
+}
 
 export const addStyles = (innerStyles, styleInstance) => {
-    const styles = innerStyles;
-    let key;
+    const styles = innerStyles
+    let key
 
     if (!styleInstance) {
       styleInstance = Style
     }
 
     const mapStyle = (key, style) => {
-        delete style.toString;
-        delete style.__isICSS;
-        let name;
+        delete style.toString
+        delete style.__isICSS
 
-        name = styleInstance.registerStyle(style, key);
+        style.$displayName = key
+        const name = styleInstance.registerStyle(style, key)
 
-        styles[key].__isICSS = true;
-        styles[key].toString = () => {
-            return name;
-        };
-    };
+        styles[key].__isICSS = true
+        styles[key].toString = () => name
+    }
 
     const mapItem = (key) => {
-        let style = styles[key];
+        let style = styles[key]
+        style.$displayName = key
+
         if (typeof style === 'function') {
             style = style.bind(styles);
             style = style();
@@ -78,10 +78,11 @@ export const addStyles = (innerStyles, styleInstance) => {
         } else if (key === '_animation') {
             for (let subKey in style) {
                 if (style.hasOwnProperty(subKey)) {
-                    delete style[subKey].toString;
-                    delete style[subKey].__isICSS;
-                    let name;
-                    name = styleInstance.registerKeyframes(style[subKey], subKey);
+                    delete style[subKey].toString
+                    delete style[subKey].__isICSS
+                    delete style.$displayName
+
+                    const name = styleInstance.registerKeyframes(style[subKey], subKey);
 
                     styles[key][subKey].__isICSS = true;
                     styles[key][subKey].toString = () => {
@@ -143,4 +144,4 @@ export const renderCss = (styleElement) => {
     }
 
     styleElement.innerHTML = Style.getStyles()
-};
+}
