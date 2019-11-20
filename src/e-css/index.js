@@ -5,7 +5,7 @@ let options = {}
 
 const clearUtilityStyles = (stylesObject) => {
     delete stylesObject.toString
-    delete stylesObject.__isICSS
+    delete stylesObject.__isECSS
 }
 
 export const cn = function() {
@@ -18,7 +18,7 @@ export const cn = function() {
         }
 
         if (typeof className === 'object') {
-            if (!className.__isICSS) {
+            if (!className.__isECSS) {
               for (let key in className) {
                   if (className.hasOwnProperty(key) && className[key]) {
                       classNames.push(key)
@@ -51,7 +51,7 @@ export const addStyles = (innerStyles, styleInstance) => {
 
         const name = styleInstance.registerStyle(style, key);
 
-        styles[key].__isICSS = true
+        styles[key].__isECSS = true
         styles[key].toString = () => name
     }
 
@@ -98,7 +98,7 @@ export const addStyles = (innerStyles, styleInstance) => {
 
                     const name = styleInstance.registerKeyframes(style[subKey], subKey)
 
-                    styles[key][subKey].__isICSS = true
+                    styles[key][subKey].__isECSS = true
                     styles[key][subKey].toString = () => name
                 }
               }

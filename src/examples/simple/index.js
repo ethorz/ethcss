@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {init} from 'ecss';
+import {init} from 'e-css';
 
 init({
     media: {

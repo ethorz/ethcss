@@ -1,5 +1,5 @@
 import React from 'react';
-import {cn, addStyles, renderCss} from 'ecss';
+import {cn, addStyles, renderCss} from 'e-css';
 
 const LazyModule = React.lazy(() => import('./LazyModule'))
 
@@ -111,11 +111,11 @@ class App extends React.Component {
         return (
             <div className={app.wrapper}>
                 <a
-                    href="https://www.npmjs.com/package/ecss"
+                    href="https://www.npmjs.com/package/e-css"
                     className={cn(app.header, app.textLeft_tabMini)}
                 >
                     <h1>
-                        ecss
+                        e-css
                     </h1>
                     <div className={app.spinner}></div>
                     <div className={cn(app.textCenter, app.indent, {[app.textMd]: true})}>
