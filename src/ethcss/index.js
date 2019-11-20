@@ -3,145 +3,127 @@ import * as freeStyle from 'free-style'
 const Style = freeStyle.create()
 let options = {}
 
-const clearUtilityStyles = (stylesObject) => {
-    delete stylesObject.toString
-    delete stylesObject.__isECSS
-}
-
 export const cn = function() {
-    const classNames = []
-    const mainArguments = Array.prototype.slice.call(arguments)
+    const classNames = [];
+    const mainArguments = Array.prototype.slice.call(arguments);
 
     mainArguments.forEach((className) => {
         if (typeof className === 'string') {
-            classNames.push(className)
-        }
-
-        if (typeof className === 'object') {
-            if (!className.__isECSS) {
-              for (let key in className) {
-                  if (className.hasOwnProperty(key) && className[key]) {
-                      classNames.push(key)
-                  }
-              }
-              return
+            classNames.push(className);
+        } else if (typeof className === 'object') {
+            if (className.__isICSS) {
+                classNames.push(className.toString());
+            } else {
+                for (let key in className) {
+                    if (className.hasOwnProperty(key)) {
+                        if (className[key]) {
+                            classNames.push(key);
+                        }
+                    }
+                }
             }
-
-            classNames.push(className.toString())
         }
-    })
+    });
 
-    return classNames.join(' ')
-}
+    return classNames.join(' ');
+};
 
 export const init = (initOptions = {}) => {
-    options = initOptions
-}
+    options = initOptions;
+};
 
 export const addStyles = (innerStyles, styleInstance) => {
-    const styles = innerStyles
-    let key
+    const styles = innerStyles;
+    let key;
 
     if (!styleInstance) {
       styleInstance = Style
     }
 
     const mapStyle = (key, style) => {
-        clearUtilityStyles(style)
+        delete style.toString;
+        delete style.__isICSS;
+        let name;
 
-        const name = styleInstance.registerStyle(style, key);
+        name = styleInstance.registerStyle(style, key);
 
-        styles[key].__isECSS = true
-        styles[key].toString = () => name
-    }
+        styles[key].__isICSS = true;
+        styles[key].toString = () => {
+            return name;
+        };
+    };
 
     const mapItem = (key) => {
-        let style = styles[key]
-
+        let style = styles[key];
         if (typeof style === 'function') {
-            style = style.bind(styles)
-            style = style()
+            style = style.bind(styles);
+            style = style();
         }
 
-        styles[key] = {
-          ...style
-        }
-
-        const additionalStyles = [
-          {
-            key: '_global',
-            register() {
-              for (let subKey in style) {
+        styles[key] = {...style};
+        if (key === '_global') {
+            for (let subKey in style) {
                 if (style.hasOwnProperty(subKey)) {
-                    clearUtilityStyles(style[subKey])
+                    delete style[subKey].toString;
+                    delete style[subKey].__isICSS;
                 }
-              }
-              styleInstance.registerCss(style)
             }
-          },
-          {
-            key: '_rules',
-            register() {
-              for (let subKey in style) {
+            styleInstance.registerCss(style);
+        } else if (key === '_rules') {
+            for (let subKey in style) {
                 if (style.hasOwnProperty(subKey)) {
-                    styleInstance.registerRule(subKey, style[subKey])
+                    styleInstance.registerRule(subKey, style[subKey]);
                 }
-              }
-            },
-          },
-          {
-            key: '_animation',
-            register() {
-              for (let subKey in style) {
-                if (style.hasOwnProperty(subKey)) {
-                    clearUtilityStyles(style[subKey])
-
-                    const name = styleInstance.registerKeyframes(style[subKey], subKey)
-
-                    styles[key][subKey].__isECSS = true
-                    styles[key][subKey].toString = () => name
-                }
-              }
             }
-          }
-        ]
+        } else if (key === '_animation') {
+            for (let subKey in style) {
+                if (style.hasOwnProperty(subKey)) {
+                    delete style[subKey].toString;
+                    delete style[subKey].__isICSS;
+                    let name;
+                    name = styleInstance.registerKeyframes(style[subKey], subKey);
 
-        const registerStyleByKey = additionalStyles.find(adStyleItem => adStyleItem.key.includes(key))
+                    styles[key][subKey].__isICSS = true;
+                    styles[key][subKey].toString = () => {
+                        return name;
+                    };
+                }
+            }
+        } else {
+            mapStyle(key, style);
 
-        if (registerStyleByKey) {
-            registerStyleByKey.register()
-            return
-        }
+            if (options.media) {
+                for (let media in options.media) {
+                    if (options.media.hasOwnProperty(media)) {
+                        const mediaKey = `${key}_${media}`;
+                        const mediaOption = options.media[media];
 
-        mapStyle(key, style)
-
-        if (!options.media) {
-          return
-        }
-
-        for (let media in options.media) {
-            if (options.media.hasOwnProperty(media)) {
-                const mediaKey = `${key}_${media}`
-                const mediaOption = options.media[media]
-
-                styles[mediaKey] = {[mediaOption]: {...style}}
-                mapStyle(mediaKey, {[mediaOption]: style})
+                        styles[mediaKey] = {[mediaOption]: {...style}};
+                        mapStyle(mediaKey, {[mediaOption]: style});
+                    }
+                }
             }
         }
-    }
-
-    const typesNeedMapItem = ['object', 'function']
+    };
 
     for (key in styles) {
-        const propertyTypeOf = typeof styles[key]
-
-        if (styles.hasOwnProperty(key) && typesNeedMapItem.includes(propertyTypeOf)) {
-            mapItem(key)
+        if (styles.hasOwnProperty(key)) {
+            if (typeof styles[key] === 'object') {
+                mapItem(key);
+            }
         }
     }
 
-    return styles
-}
+    for (key in styles) {
+        if (styles.hasOwnProperty(key)) {
+            if (typeof styles[key] === 'function') {
+                mapItem(key);
+            }
+        }
+    }
+
+    return styles;
+};
 
 export const injectStyles = (innerStyles) => {
     const sheet = document.createElement('style')
@@ -161,4 +143,4 @@ export const renderCss = (styleElement) => {
     }
 
     styleElement.innerHTML = Style.getStyles()
-}
+};
