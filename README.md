@@ -1,7 +1,9 @@
 ## ethcss
 
-# DEPRECATED
 It is npm package, for writing css in js.
+
+> The package is no longer supported. If you want to make changes, you can support by pull requests
+> Пакет больше не поддерживается. Если хотите внести изменения, Вы можете поддержать пулл реквестами
 
 * ✓ Naming like CSS modules
 * ✓ Automatic Vendor Prefixing
