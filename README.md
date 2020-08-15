@@ -1,4 +1,6 @@
 ## ethcss
+
+# DEPRECATED
 It is npm package, for writing css in js.
 
 * ✓ Naming like CSS modules
